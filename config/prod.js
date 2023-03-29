@@ -1,7 +1,7 @@
 module.exports = {
   dbURL:
-    'mongodb+srv://mistertoy:DGtbXmFFyz34ONbw@mistertoy.cithgin.mongodb.net/?retryWrites=true&w=majority',
-  dbName: 'mistertoy_db',
+    'mongodb+srv://yoyo:8AXRS4wvY2Ihq0er@jellodb.ysowseq.mongodb.net/?retryWrites=true&w=majority',
+  dbName: 'board_db',
 }
 // require('dotenv').config()
 
