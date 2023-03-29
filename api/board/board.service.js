@@ -5,21 +5,11 @@ const { ObjectId } = require('mongodb')
 
 async function query(filterBy = { txt: '' }, paging = {}) {
   try {
-    const criteria = {
-      title: { $regex: filterBy.txt, $options: 'i' },
-    }
-    let { pageIdx, PAGE_SIZE } = paging
     const collection = await dbService.getCollection('board')
     const totalBoards = await collection.countDocuments()
-    const lastPage = Math.ceil(totalBoards / PAGE_SIZE) - 1
-    const totalPages = Math.ceil(totalBoards / PAGE_SIZE)
-    if (pageIdx >= totalPages) pageIdx = 0
-    else if (pageIdx < 0) pageIdx = lastPage
-    var boards = await collection
-      .find(criteria)
-      .skip(pageIdx * PAGE_SIZE)
-      .limit(PAGE_SIZE)
-      .toArray()
+    var boards = await collection.find().toArray()
+
+    console.log(boards)
     return boards
   } catch (err) {
     logger.error('cannot find boards', err)

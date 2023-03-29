@@ -4,15 +4,8 @@ const logger = require('../../services/logger.service')
 
 async function getBoards(req, res) {
   try {
-    const filterBy = {
-      txt: req.query.txt || '',
-    }
-    const paging = {
-      pageIdx: +req.query.pageIdx,
-      PAGE_SIZE: +req.query.PAGE_SIZE,
-    }
-    logger.debug('Getting Boards', filterBy, paging)
-    const boards = await boardService.query(filterBy, paging)
+    logger.debug('Getting Boards')
+    const boards = await boardService.query()
     res.json(boards)
   } catch (err) {
     logger.error('Failed to get boards', err)
