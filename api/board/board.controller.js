@@ -3,13 +3,16 @@ const boardService = require('./board.service.js')
 const logger = require('../../services/logger.service')
 
 async function getBoards(req, res) {
+  const { userId } = req.query
   try {
     logger.debug('Getting Boards')
-    const boards = await boardService.query()
+    const boards = await boardService.query(userId)
     res.json(boards)
   } catch (err) {
     logger.error('Failed to get boards', err)
-    res.status(500).send({ err: 'Failed to get boards' })
+    res
+      .status(500)
+      .send({ err: `Failed to get boards for user with id ${userId}` })
   }
 }
 

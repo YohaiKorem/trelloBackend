@@ -14,6 +14,7 @@ function setupSocketAPI(http) {
       logger.info(`Socket disconnected [id: ${socket.id}]`)
     })
     socket.on('chat-set-topic', (topic) => {
+      console.log('topic', topic)
       if (socket.myTopic === topic) return
       if (socket.myTopic) {
         socket.leave(socket.myTopic)
@@ -24,6 +25,22 @@ function setupSocketAPI(http) {
       socket.join(topic)
       socket.myTopic = topic
     })
+
+    socket.on('task-updated', (activity) => {
+      console.log('activity in task', activity)
+      logger.info(
+        `New activity from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
+      )
+      gIo.to(socket.myTopic).emit('chat-add-msg', activity)
+    })
+    socket.on('board-updated', (activity) => {
+      console.log('activity in board', activity)
+      logger.info(
+        `New activity from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
+      )
+      gIo.to(socket.myTopic).emit('chat-add-msg', activity)
+    })
+
     socket.on('chat-send-msg', (msg) => {
       console.log(msg)
       logger.info(

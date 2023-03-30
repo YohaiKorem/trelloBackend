@@ -3,13 +3,11 @@ const logger = require('../../services/logger.service')
 const utilService = require('../../services/util.service')
 const { ObjectId } = require('mongodb')
 
-async function query(filterBy = { txt: '' }, paging = {}) {
+async function query(userId) {
   try {
     const collection = await dbService.getCollection('board')
-    const totalBoards = await collection.countDocuments()
-    var boards = await collection.find().toArray()
+    const boards = await collection.find({ 'createdBy._id': userId }).toArray()
 
-    console.log(boards)
     return boards
   } catch (err) {
     logger.error('cannot find boards', err)
@@ -18,7 +16,6 @@ async function query(filterBy = { txt: '' }, paging = {}) {
 }
 
 async function getById(boardId) {
-  console.log(boardId)
   try {
     const collection = await dbService.getCollection('board')
     const board = collection.findOne({ _id: new ObjectId(boardId) })
@@ -89,7 +86,6 @@ async function updateBoardMsg(msg, boardId) {
 async function addBoardMsg(boardId, msg) {
   try {
     if (!msg.id) msg.id = utilService.makeId()
-    console.log(boardId)
     const collection = await dbService.getCollection('board')
     await collection.updateOne(
       { _id: new ObjectId(boardId) },
