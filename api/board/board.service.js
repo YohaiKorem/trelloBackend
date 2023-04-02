@@ -6,7 +6,7 @@ const { ObjectId } = require('mongodb')
 async function query(userId) {
   try {
     const collection = await dbService.getCollection('board')
-    const boards = await collection.find({ 'createdBy._id': userId }).toArray()
+    const boards = await collection.find().toArray()
 
     return boards
   } catch (err) {
