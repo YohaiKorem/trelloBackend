@@ -8,7 +8,7 @@ async function login(req, res) {
     const loginToken = authService.getLoginToken(user)
     logger.info('User login: ', user)
     res.cookie('loginToken', loginToken)
-
+    console.log(user)
     res.json(user)
   } catch (err) {
     logger.error('Failed to Login ' + err)
@@ -19,6 +19,7 @@ async function login(req, res) {
 async function signup(req, res) {
   try {
     const { username, password, fullname } = req.body
+    console.log('username', username)
     // Never log passwords
     // logger.debug(fullname + ', ' + username + ', ' + password)
     const account = await authService.signup(username, password, fullname)

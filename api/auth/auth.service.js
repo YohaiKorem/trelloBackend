@@ -22,6 +22,7 @@ async function login(username, password) {
 
 async function signup(username, password, fullname) {
   const saltRounds = 10
+  console.log('username', username)
 
   logger.debug(
     `auth.service - signup with username: ${username}, fullname: ${fullname}`
