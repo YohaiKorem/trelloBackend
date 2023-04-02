@@ -16,10 +16,10 @@ async function query(filterBy = {}) {
   const criteria = _buildCriteria(filterBy)
   try {
     const collection = await dbService.getCollection('user')
-    var users = await collection.find(criteria).sort({ nickname: -1 }).toArray()
+    var users = await collection.find(criteria).toArray()
     users = users.map((user) => {
       delete user.password
-      user.isHappy = true
+
       user.createdAt = new ObjectId(user._id).getTimestamp()
       // Returning fake fresh data
       // user.createdAt = Date.now() - (1000 * 60 * 60 * 24 * 3) // 3 days ago
@@ -71,6 +71,9 @@ async function update(user) {
       _id: new ObjectId(user._id),
       username: user.username,
       fullname: user.fullname,
+      tasks: user.tasks,
+      boards: user.tasks,
+      
     }
     const collection = await dbService.getCollection('user')
     await collection.updateOne({ _id: userToSave._id }, { $set: userToSave })

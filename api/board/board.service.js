@@ -7,7 +7,7 @@ async function query(userId) {
   try {
     const collection = await dbService.getCollection('board')
     const boards = await collection.find().toArray()
-
+    // { 'createdBy._id': userId }
     return boards
   } catch (err) {
     logger.error('cannot find boards', err)

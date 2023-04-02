@@ -6,7 +6,8 @@ async function getBoards(req, res) {
   const { userId } = req.query
   try {
     logger.debug('Getting Boards')
-    const boards = await boardService.query(userId)
+    console.log(userId)
+    const boards = await boardService.query()
     res.json(boards)
   } catch (err) {
     logger.error('Failed to get boards', err)

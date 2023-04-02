@@ -26,19 +26,27 @@ function setupSocketAPI(http) {
       socket.myTopic = topic
     })
 
-    socket.on('task-updated', (activity) => {
-      console.log('activity in task', activity)
+    socket.on('task-updated', (data) => {
+      console.log(' socketservice  updated task', data)
+
       logger.info(
         `New activity from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
       )
-      gIo.to(socket.myTopic).emit('chat-add-msg', activity)
+      gIo.emit('task-updated', data)
     })
-    socket.on('board-updated', (activity) => {
-      console.log('activity in board', activity)
+    socket.on('board-updated', (board) => {
+      // console.log('board update', board)
+      logger.info(
+        `New board update from socket [id: ${socket.id}], emitting to boardId ${socket.myTopic}`
+      )
+      gIo.to(socket.myTopic).emit('board-updated', board)
+    })
+    socket.on('task-dropped', (data) => {
+      console.log('task dropped', data)
       logger.info(
         `New activity from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
       )
-      gIo.to(socket.myTopic).emit('chat-add-msg', activity)
+      gIo.to(socket.myTopic).emit('task-dropped', data)
     })
 
     socket.on('chat-send-msg', (msg) => {
