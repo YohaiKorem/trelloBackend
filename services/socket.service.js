@@ -39,7 +39,7 @@ function setupSocketAPI(http) {
       logger.info(
         `New board update from socket [id: ${socket.id}], emitting to boardId ${socket.myTopic}`
       )
-      gIo.to(socket.myTopic).emit('board-updated', board)
+      gIo.emit('board-updated', board)
     })
     socket.on('task-dropped', (data) => {
       console.log('task dropped', data)
@@ -48,7 +48,18 @@ function setupSocketAPI(http) {
       )
       gIo.to(socket.myTopic).emit('task-dropped', data)
     })
-
+    socket.on('user-invited', (data) => {
+      const { boardId, userId, type } = data
+      const res = {
+        type,
+        data: boardId,
+        userId,
+      }
+      logger.info(
+        `user with id: ${userId} invited to board with id: ${boardId}`
+      )
+      emitToUser(res)
+    })
     socket.on('chat-send-msg', (msg) => {
       console.log(msg)
       logger.info(
@@ -84,6 +95,7 @@ function emitTo({ type, data, label }) {
 }
 
 async function emitToUser({ type, data, userId }) {
+  console.log('type', type, 'data', data)
   userId = userId.toString()
   const socket = await _getUserSocket(userId)
 
